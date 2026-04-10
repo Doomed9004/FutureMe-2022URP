@@ -1,13 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class JumpBox : JumpBase,IInteractable,IPointerDownHandler,IPointerUpHandler
+public class JumpBox : JumpBase,IPointerDownHandler,IPointerUpHandler
 {
-    public void OnInteract()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log(name+"OnPointerDown");
