@@ -10,8 +10,8 @@ public class DragObject : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     {
         if (GetComponent<EventTrigger>() == null)
             transform.AddComponent<EventTrigger>();
-        if(GetComponent<Collider>() == null)
-            transform.AddComponent<BoxCollider2D>();
+        // if(GetComponent<Collider>() == null)
+        //     transform.AddComponent<BoxCollider2D>();
         if (mainCamera == null)
             mainCamera = Camera.main;
     }
