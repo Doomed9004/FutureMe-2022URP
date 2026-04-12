@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,8 @@ public class SceneManager : MonoBehaviour
     [SerializeField] private Transform root;
     //[SerializeField] CustomSceneData[] scenes;
     [SerializeField] private float duration;
-    [SerializeField] CustomSceneData currentScene;
+    [SerializeField] CustomSceneData currentSceneData;
+    public GameObject curScene;
     
     [System.Serializable]
     class CustomSceneData
@@ -24,6 +26,8 @@ public class SceneManager : MonoBehaviour
     
     Dictionary<GameObject,SpriteRenderer> scenesDict = new Dictionary<GameObject,SpriteRenderer>();
     public static SceneManager Ins{get; private set;}
+    
+    public event Action<GameObject> OnSceneChange;
 
     private void Awake()
     {
@@ -36,7 +40,7 @@ public class SceneManager : MonoBehaviour
             //scenes[i]=new CustomSceneData(obj,spriteRenderer);
             scenesDict[obj] = spriteRenderer;
             
-            if(obj==currentScene.obj)continue;
+            if(obj==currentSceneData.obj)continue;
             
             Color color = spriteRenderer.color;
             color=new Color(color.r, color.g, color.b, 0);
@@ -60,9 +64,9 @@ public class SceneManager : MonoBehaviour
         while (currentTime < duration)
         {
             a=Mathf.Lerp(1,0, currentTime / duration);
-            Color color = currentScene.spriteRenderer.color;
+            Color color = currentSceneData.spriteRenderer.color;
             color=new Color(color.r, color.g, color.b, a);
-            currentScene.spriteRenderer.color = color;
+            currentSceneData.spriteRenderer.color = color;
             
             currentTime += Time.deltaTime;
             yield return null;
@@ -92,7 +96,8 @@ public class SceneManager : MonoBehaviour
             yield return null;
         }
         
-        currentScene.obj=scene;
-        currentScene.spriteRenderer = scenesDict[scene];
+        currentSceneData.obj=scene;
+        currentSceneData.spriteRenderer = scenesDict[scene];
+        OnSceneChange?.Invoke(scene);
     } 
 }

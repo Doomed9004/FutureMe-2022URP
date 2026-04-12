@@ -108,7 +108,6 @@ public class ItemManager : MonoBehaviour
         ItemDict[cell] = itemData;
         //更新Cell
         cell.UpdateCell(itemData);
-
         #region MyRegion
 
         // int count = items.Count - childCount;
