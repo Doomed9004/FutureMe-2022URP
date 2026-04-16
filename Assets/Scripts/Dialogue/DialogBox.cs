@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class DialogBox : MonoBehaviour
+public class DialogBox : MonoBehaviour,IPointerUpHandler
 {
     [System.Serializable]
     public class DialogList
@@ -16,7 +17,7 @@ public class DialogBox : MonoBehaviour
         public GameObject scene;
     }
 
-    public SceneManager SceneManager;
+    public SceneManager sceneManager;
     private DialogList curDL;
     public DialogWindow window;
     public TextMeshPro text;
@@ -25,9 +26,10 @@ public class DialogBox : MonoBehaviour
     [SerializeField]DialogList[] dialogs;
     Dictionary<GameObject,DialogList> dialogsDict=new Dictionary<GameObject,DialogList>();
     Dictionary<DialogList,bool> dialogsState=new Dictionary<DialogList, bool>();//记录状态，第一次进入场景时主动弹出，再次进入时只能被动弹出
+    
     private void Awake()
     {
-        SceneManager.OnSceneChange += SceneChangeEventHandler;
+        sceneManager.OnSceneChange += SceneChangeEventHandler;
         window.OnClick += ClickedEventHandler;
         foreach (var dl in dialogs)//初始化设置初始值
         {
@@ -36,18 +38,34 @@ public class DialogBox : MonoBehaviour
             // dl.dialogue.Initialize(dl.texts,text);
             // dl.dialogue.OnFinish += DialogFinishEventHandler;
         }
+        
+        ChangeDialogBoxActive(false);
     }
 
-    private void DialogFinishEventHandler()
+    private void DialogFinishHandler()
     {
         //对话结束关闭窗口并重置Dialogue
-        window.gameObject.SetActive(false);
-
+        ChangeDialogBoxActive(false);
+        
         curDL = null;
         curText = "";
     }
 
-    
+    void ChangeDialogBoxActive(bool active)
+    {
+        window.gameObject.SetActive(active);
+        text.gameObject.SetActive(active);
+    }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (dialogsDict.TryGetValue(sceneManager.curScene, out DialogList dl))
+        {
+            //开始显示
+            BeginText(dl);
+            ChangeDialogBoxActive(true);
+
+        }
+    }
     
     void SceneChangeEventHandler(GameObject scene)
     {
@@ -58,13 +76,15 @@ public class DialogBox : MonoBehaviour
             dialogsState[dl] = true;
             //开始显示
             BeginText(dl);
-            window.gameObject.SetActive(true);
+            ChangeDialogBoxActive(true);
         }
         else
         {
             //TODO：处理场景不存在或者退出场景的情况
+            ChangeDialogBoxActive(false);
         }
     }
+    
     private void ClickedEventHandler()
     {
         if(curDL == null)return;
@@ -78,6 +98,29 @@ public class DialogBox : MonoBehaviour
     private bool isTyping = false;        // 标记是否正在打字过程中
     
     Coroutine coroutine;
+    public void BeginText(DialogList dl)
+    {
+        curDL = dl;
+        curIndex = 0;
+        curText = dl.texts[curIndex];
+        coroutine = StartCoroutine(ShowText(dl));
+    }
+    private IEnumerator ShowText(DialogList dl)
+    {
+        //显示第一个元素
+        isTyping = true;
+        isTextComplete = false;
+        text.text = "";
+
+        foreach (char c in curText)
+        {
+            text.text += c;
+            yield return new WaitForSeconds(delay); // 调整打字速度
+        }
+
+        isTextComplete = true;
+        isTyping = false;
+    }
     public void TryNextText(DialogList dl)
     {
         if (isTyping)
@@ -95,7 +138,6 @@ public class DialogBox : MonoBehaviour
             NextLine(dl);
         }
     }
-    
     private void NextLine(DialogList dl)
     {
         curIndex++;
@@ -109,34 +151,12 @@ public class DialogBox : MonoBehaviour
             // 所有文本显示完毕，可添加结束逻辑
             Debug.Log("所有对话已结束");
             //TODO：关闭并重置对话
-            
+            window.gameObject.SetActive(false);
+            curIndex = 0;
+
+            DialogFinishHandler();
             //OnFinish?.Invoke();
         }
     }
-
-    public void BeginText(DialogList dl)
-    {
-        curDL = dl;
-        curIndex = 0;
-        curText = dl.texts[curIndex];
-        coroutine = StartCoroutine(ShowText(dl));
-    }
-
-    private IEnumerator ShowText(DialogList dl)
-    {
-        //显示第一个元素
-        isTyping = true;
-        isTextComplete = false;
-        text.text = "";
-
-        foreach (char c in curText)
-        {
-            text.text += c;
-            yield return new WaitForSeconds(delay); // 调整打字速度
-        }
-
-        isTextComplete = true;
-        isTyping = false;
-    }
-
+    
 }

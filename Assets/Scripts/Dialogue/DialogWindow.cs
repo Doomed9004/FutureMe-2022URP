@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DialogWindow : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class DialogWindow : MonoBehaviour, IPointerUpHandler
 {
     public event Action OnClick;
 
@@ -11,10 +11,6 @@ public class DialogWindow : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         if (GetComponent<EventTrigger>() == null)
             transform.AddComponent<EventTrigger>();
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
     }
 
     public void OnPointerUp(PointerEventData eventData)
