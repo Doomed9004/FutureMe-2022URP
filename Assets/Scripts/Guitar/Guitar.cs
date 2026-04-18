@@ -2,12 +2,14 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Guitar : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
+public class Guitar : MonoBehaviour,IPointerUpHandler
 {
     private GuitarState curState = GuitarState.Misshapen;
     public ItemData misshapenItem;
     public MultiPassword multiPassword;
     bool isTuned = false;
+
+    public Sprite guitarSprite;
     enum GuitarState
     {
         Misshapen,
@@ -23,12 +25,9 @@ public class Guitar : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
     void Tuned()
     {
         //TODO:隐藏调弦界面
-        
+        multiPassword.SetActive(false);
         curState = GuitarState.Complete;
-    }
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        
+        //TODO:提示调弦完成
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -39,7 +38,8 @@ public class Guitar : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
                 if (ItemManager.Ins.curItemData == misshapenItem)
                 {
                     //TODO:上弦，显示调弦界面
-                    
+                    multiPassword.SetActive(true);//显示条线页面
+                    GetComponent<SpriteRenderer>().sprite = guitarSprite;//更换上线后的素材
                     curState = GuitarState.NotTuned;
                 }
                 break;

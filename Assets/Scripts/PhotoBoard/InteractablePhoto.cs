@@ -7,11 +7,13 @@ public class InteractablePhoto : MonoBehaviour,IEndDragHandler
     [SerializeField]GameObject target;
     bool getTarget = false;
     DragObject dragObject;
+    public event Action Complete;
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!getTarget)return;
         dragObject.canDrag = false;
         transform.position = target.transform.position;
+        Complete?.Invoke();
     }
 
     private void Start()
@@ -30,5 +32,10 @@ public class InteractablePhoto : MonoBehaviour,IEndDragHandler
     {
         if(other.gameObject!=target)return;
         getTarget = false;
+    }
+
+    public bool GetState()
+    {
+        return getTarget;
     }
 }
