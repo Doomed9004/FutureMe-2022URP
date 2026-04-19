@@ -35,12 +35,15 @@ public class Guitar : MonoBehaviour,IPointerUpHandler
         switch (curState)
         {
             case GuitarState.Misshapen:
-                if (ItemManager.Ins.curItemData == misshapenItem)
+                if (misshapenItem!=null && ItemManager.Ins.curItemData == misshapenItem)
                 {
                     //TODO:上弦，显示调弦界面
                     multiPassword.SetActive(true);//显示条线页面
                     GetComponent<SpriteRenderer>().sprite = guitarSprite;//更换上线后的素材
                     curState = GuitarState.NotTuned;
+                    
+                    //移除道具
+                    ItemManager.Ins.DestroyItem();
                 }
                 break;
             case GuitarState.Complete:

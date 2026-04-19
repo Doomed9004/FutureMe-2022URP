@@ -16,7 +16,7 @@ public class ItemCell : MonoBehaviour
     {
         button.onClick.AddListener(()=>
         {
-            ItemManager.Ins.ChangeCurrentItem(itemData, this,iconImage.transform);
+            ItemManager.Ins.ChangeCurrentItem(itemData, this,transform);
         });
     }
 

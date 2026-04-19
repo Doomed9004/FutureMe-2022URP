@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class SimplePickup : MonoBehaviour,IInteractable
+public class SimplePickup : MonoBehaviour,IPointerUpHandler
 {
     //基础拾取物品 
     [SerializeField]ItemData itemData;
-
-    public void OnInteract(ItemData heldItem)
+    
+    public void OnPointerUp(PointerEventData eventData)
     {
         Debug.Log("拾取物品："+itemData.name);
         if(itemData.clickSound!=null)

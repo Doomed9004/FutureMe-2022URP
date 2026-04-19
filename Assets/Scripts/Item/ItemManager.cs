@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -31,10 +32,10 @@ public class ItemManager : MonoBehaviour
     public ItemCell curItemCell;
     [SerializeField] List<ItemData> items;
 
-    [Space(10)]
+    [Space(20)]
     //UI相关组件
-    [SerializeField]
-    GameObject itemUIPrefab;
+    // [SerializeField]
+    // GameObject itemUIPrefab;
 
     [SerializeField] Transform contentTrans;
     [SerializeField] Transform indicator;
@@ -55,14 +56,6 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    // public void UseItem(ItemData itemData)
-    // {
-    //     if (!itemData.canReuse)//物品不能重复使用 销毁并刷新
-    //     {
-    //         DestroyItem(itemData);
-    //     }
-    // }
-
     public void AddItem(ItemData itemData)
     {
         //items.Add(itemData);
@@ -78,6 +71,10 @@ public class ItemManager : MonoBehaviour
             RefreshUI(itemData, false);
         else
             return;
+    }
+    public void DestroyItem()
+    {
+        RefreshUI(curItemData, false);
     }
 
     void RefreshUI(ItemData itemData, bool isAdd)
@@ -108,6 +105,9 @@ public class ItemManager : MonoBehaviour
         ItemDict[cell] = itemData;
         //更新Cell
         cell.UpdateCell(itemData);
+        //更新指示器
+        RefreshIndicator();
+
         #region MyRegion
 
         // int count = items.Count - childCount;
@@ -158,49 +158,35 @@ public class ItemManager : MonoBehaviour
 
     void RefreshIndicator()
     {
-        // if (curItemData == null||curItemData.displayName==string.Empty)
-        // {
-        //     indicator.gameObject.SetActive(false);
-        //     return;
-        // }
-        //
-        // ItemCell cell = itemCells.Find(t => t.GetItem() == curItemData);
-        //
-        // if (cell == null)return;
-        //
-        // SetIndicator(true, cell.GetParent());
-    }
-
-    public void ChangeCurrentItem(ItemData itemData, ItemCell itemCell, Transform trans)
-    {
-        if (itemData == curItemData)
+        if (curItemData == null||curItemData.displayName==string.Empty)
         {
-            curItemData = null;
-            curItemCell = null;
-            //indicator.gameObject.SetActive(false);
+            indicator.gameObject.SetActive(false);
             return;
         }
-
-        curItemCell = itemCell;
-        curItemData = itemData;
-        SetIndicator(true, trans);
+        
+        ItemCell cell = itemCells.Find(t => t.GetItem() == curItemData);
+        
+        if (cell == null)return;
+        
+        SetIndicator(true, cell.GetParent());
     }
 
     void SetIndicator(bool active, Transform trans)
     {
-        // if (active)
-        // {
-        //     indicator.gameObject.SetActive(true);
-        //     indicator.SetParent(trans);
-        //     indicator.transform.localPosition = Vector3.zero;
-        //     indicator.transform.rotation = trans.rotation;
-        //     indicator.transform.localScale = trans.localScale;
-        // }
-        // else
-        // {
-        //     indicator.gameObject.SetActive(false);
-        //     indicator.SetParent(trans); //这一行可能会导致指示器的缩放改变//但是没有这行可能导致指示器被删除
-        // }
+        if (active)
+        {
+            indicator.gameObject.SetActive(true);
+            indicator.SetParent(trans);
+            indicator.transform.localPosition = Vector3.zero;
+            indicator.transform.rotation = trans.rotation;
+            indicator.transform.localScale = trans.localScale;
+        }
+        else
+        {
+            indicator.gameObject.SetActive(false);
+            indicator.SetParent(trans); //这一行可能会导致指示器的缩放改变//但是没有这行可能导致指示器被删除
+            indicator.transform.SetAsFirstSibling();
+        }
     }
 
     public ItemData[] testItems;
@@ -217,6 +203,20 @@ public class ItemManager : MonoBehaviour
         {
             Debug.Log(i);
         }
+    }
+    public void ChangeCurrentItem(ItemData itemData, ItemCell itemCell, Transform trans)
+    {
+        if (itemData == curItemData)
+        {
+            curItemData = null;
+            curItemCell = null;
+            //indicator.gameObject.SetActive(false);
+            return;
+        }
+
+        curItemCell = itemCell;
+        curItemData = itemData;
+        SetIndicator(true, trans);
     }
     
     [ContextMenu("删除测试")]
