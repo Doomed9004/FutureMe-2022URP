@@ -1,20 +1,38 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PhotoBoard : MonoBehaviour
+public class PhotoBoard : MonoBehaviour,IPointerUpHandler
 {
     public InteractablePhoto[] photos;
-
+    [SerializeField] private ItemData[] needItem;
     public event Action Unlock;
 
+    private Dictionary<ItemData, GameObject> photo=new Dictionary<ItemData, GameObject>();
     private void Awake()
     {
         foreach (InteractablePhoto photo in photos)
         {
             photo.Complete += Check;
         }
-    }
 
+        for (int i = 0; i < photos.Length; i++)
+        {
+            photo[needItem[i]]=photos[i].gameObject;
+            photos[i].gameObject.SetActive(false);
+        }
+    }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        ItemData item = ItemManager.Ins.curItemData;
+        if (item == null) return;
+        if (photo.TryGetValue(item, out GameObject obj))
+        {
+            obj.SetActive(true);
+            ItemManager.Ins.DestroyItem();
+        }
+    }
     void Check()
     {
         foreach (InteractablePhoto photo in photos)
@@ -26,4 +44,6 @@ public class PhotoBoard : MonoBehaviour
         //TODO：解锁新对话，解锁写信功能
         Unlock?.Invoke();
     }
+
+    
 }

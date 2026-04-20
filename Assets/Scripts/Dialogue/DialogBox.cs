@@ -8,22 +8,13 @@ using UnityEngine.EventSystems;
 
 public class DialogBox : MonoBehaviour,IPointerUpHandler
 {
-    [System.Serializable]
-    public class DialogList
-    {
-        public string[] texts;
-        //[HideInInspector]
-        //public Dialogue dialogue;
-        public GameObject scene;
-    }
-
     public SceneManager sceneManager;
     private DialogList curDL;
     public DialogWindow window;
     public TextMeshPro text;
-
     
-    [SerializeField]DialogList[] dialogs;
+    //[SerializeField]DialogList[] dialogs;
+    [SerializeField]DialogSO dialogsSO;//数据
     Dictionary<GameObject,DialogList> dialogsDict=new Dictionary<GameObject,DialogList>();
     Dictionary<DialogList,bool> dialogsState=new Dictionary<DialogList, bool>();//记录状态，第一次进入场景时主动弹出，再次进入时只能被动弹出
     
@@ -31,12 +22,10 @@ public class DialogBox : MonoBehaviour,IPointerUpHandler
     {
         sceneManager.OnSceneChange += SceneChangeEventHandler;
         window.OnClick += ClickedEventHandler;
-        foreach (var dl in dialogs)//初始化设置初始值
+        foreach (var dl in dialogsSO.dialogs)//初始化设置初始值
         {
             dialogsDict[dl.scene] = dl;
             dialogsState[dl] = false;
-            // dl.dialogue.Initialize(dl.texts,text);
-            // dl.dialogue.OnFinish += DialogFinishEventHandler;
         }
         
         ChangeDialogBoxActive(false);

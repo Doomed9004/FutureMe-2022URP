@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3eeb410377a84149bc204459dfacfbb, type: 3}
-  m_Name: GuitarString 2
+  m_Name: GuitarPhoto
   m_EditorClassIdentifier: 
   id: 0
-  displayName: GuitarString
-  icon: {fileID: 21300000, guid: 6499eeaa16644e544bc5be9301add9ef, type: 3}
+  displayName: GuitarPhoto
+  icon: {fileID: 21300000, guid: 329b9b9ea57287a43b5e900aa62cc7dd, type: 3}
   clickSound: {fileID: 0}
   useSound: {fileID: 0}

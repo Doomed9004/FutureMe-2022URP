@@ -12,7 +12,9 @@ public class InteractablePhoto : MonoBehaviour,IEndDragHandler
     {
         if (!getTarget)return;
         dragObject.canDrag = false;
-        transform.position = target.transform.position;
+        Vector3 tarPos = target.transform.position;
+        Vector3 pos=new Vector3(tarPos.x,tarPos.y,transform.position.z);
+        transform.position = pos;
         Complete?.Invoke();
     }
 
