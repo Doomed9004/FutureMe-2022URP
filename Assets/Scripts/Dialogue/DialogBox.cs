@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -72,6 +70,21 @@ public class DialogBox : MonoBehaviour,IPointerUpHandler
             //TODO：处理场景不存在或者退出场景的情况
             ChangeDialogBoxActive(false);
         }
+    }
+
+    //可以从外部输入改变字典并显示对话
+    public void ShowDialog(DialogList dl)
+    {
+        //GameObject sceneObj = GameObject.Find(sceneName);
+        // if (sceneObj == null)
+        //     Debug.LogError("找不到指定场景");
+        //DialogList dl = new DialogList(texts, sceneObj);
+        dialogsDict[dl.scene]=dl;
+        dialogsState[dl] = true;
+
+        //开始显示
+        BeginText(dl);
+        ChangeDialogBoxActive(true);
     }
     
     private void ClickedEventHandler()

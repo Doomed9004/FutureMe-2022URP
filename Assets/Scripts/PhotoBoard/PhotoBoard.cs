@@ -7,6 +7,10 @@ public class PhotoBoard : MonoBehaviour,IPointerUpHandler
 {
     public InteractablePhoto[] photos;
     [SerializeField] private ItemData[] needItem;
+    
+    public DialogBox dialogBox;
+    public DialogList newDialog;
+    public NoteBook noteBook;
     public event Action Unlock;
 
     private Dictionary<ItemData, GameObject> photo=new Dictionary<ItemData, GameObject>();
@@ -42,6 +46,9 @@ public class PhotoBoard : MonoBehaviour,IPointerUpHandler
         
         //照片整理完成
         //TODO：解锁新对话，解锁写信功能
+        dialogBox.ShowDialog(newDialog);//显示新对话
+        noteBook.SetCanWrite(true);//解锁写信功能
+        
         Unlock?.Invoke();
     }
 

@@ -54,6 +54,7 @@ public class ItemManager : MonoBehaviour
         {
             ItemDict[i] = null;
         }
+        indicator.gameObject.SetActive(false);
     }
 
     public void AddItem(ItemData itemData)
@@ -180,12 +181,12 @@ public class ItemManager : MonoBehaviour
             indicator.transform.localPosition = Vector3.zero;
             indicator.transform.rotation = trans.rotation;
             indicator.transform.localScale = trans.localScale;
+            indicator.transform.SetAsFirstSibling();//使指示器最先渲染（显示在Icon下面）
         }
         else
         {
             indicator.gameObject.SetActive(false);
             indicator.SetParent(trans); //这一行可能会导致指示器的缩放改变//但是没有这行可能导致指示器被删除
-            indicator.transform.SetAsFirstSibling();
         }
     }
 

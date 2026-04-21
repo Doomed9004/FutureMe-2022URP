@@ -118,11 +118,12 @@ public class DialogSOImporter : EditorWindow
             else
                 Debug.LogWarning($"Row {i + 1}: GameObject '{sceneName}' not found in current scene.");
 
-            DialogList dl = new DialogList
-            {
-                texts = texts,
-                scene = sceneObj
-            };
+            // DialogList dl = new DialogList
+            // {
+            //     texts = texts,
+            //     scene = sceneObj
+            // };
+            DialogList dl = new DialogList(texts, sceneObj);
             dialogList.Add(dl);
         }
 
