@@ -60,3 +60,8 @@ MonoBehaviour:
     - "\u5BF9\u4E86\uFF0C\u770B\u770B\u65E5\u8BB0"
     sceneName: "\u7ED3\u675F\u573A\u666F"
     scene: {fileID: 0}
+  - texts:
+    - "\u5DF2\u7ECF\u5F88\u665A\u4E86"
+    - "\u65E9\u70B9\u7761\u5427,\u660E\u5929\u8FD8\u8981\u4E0A\u5B66"
+    sceneName: "\u4E3B\u573A\u666F12"
+    scene: {fileID: 0}

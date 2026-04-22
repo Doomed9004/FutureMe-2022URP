@@ -13,7 +13,7 @@ public class SceneManager : MonoBehaviour
     private GameObject[] _scenes;
 
     public GameObject firstScene;
-    
+    public GameObject defaultScene;    
     public static SceneManager Ins{get; private set;}
     public event Action<GameObject> OnSceneChange;
 
@@ -56,6 +56,7 @@ public class SceneManager : MonoBehaviour
         {
             i.SetActive(i == scene);
         }
+        OnSceneChange?.Invoke(scene);
         
         //淡入
         while (currentTime < duration)
@@ -69,6 +70,11 @@ public class SceneManager : MonoBehaviour
         }
         
         curScene = scene;
-        OnSceneChange?.Invoke(scene);
-    } 
+    }
+
+    [ContextMenu("设置为默认场景")]
+    public void Func()
+    {
+        firstScene=defaultScene;
+    }
 }

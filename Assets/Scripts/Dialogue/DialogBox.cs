@@ -126,7 +126,7 @@ public class DialogBox : MonoBehaviour,IPointerUpHandler
         isTextComplete = true;
         isTyping = false;
     }
-    public void TryNextText(DialogList dl)
+    void TryNextText(DialogList dl)
     {
         if (isTyping)
         {

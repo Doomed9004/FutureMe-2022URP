@@ -8,10 +8,10 @@ public class DynamicPen : MonoBehaviour,IDragHandler
     public Brush brush;
     public float depth=-.1f;
 
-    private void Start()
-    {
-        drawCamera.gameObject.SetActive(false);
-    }
+    // private void Start()
+    // {
+    //     drawCamera.gameObject.SetActive(false);
+    // }
 
     private void OnEnable()
     {

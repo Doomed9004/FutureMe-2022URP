@@ -10,7 +10,6 @@ public class DialogList
 {
     public string[] texts;//文本内容
     public string sceneName;
-    [HideInInspector]
     public GameObject scene;//目标场景
     public DialogList(string[] texts, string sceneName)
     {

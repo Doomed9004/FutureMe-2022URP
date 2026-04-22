@@ -90,6 +90,7 @@ public class ItemManager : MonoBehaviour
             itemCount--;
             curItemCell.UpdateCell(null);
             ItemDict[curItemCell] = null;
+            curItemData = null;
             curItemCell.transform.SetAsLastSibling();
             //把ItemCell从列表中也挪到最后一个
             cell = curItemCell;
@@ -97,6 +98,7 @@ public class ItemManager : MonoBehaviour
             itemCells.Remove(cell);
             itemCells.Add(cell);
             
+            RefreshIndicator(isAdd);
             return;
         }
 
@@ -107,57 +109,10 @@ public class ItemManager : MonoBehaviour
         //更新Cell
         cell.UpdateCell(itemData);
         //更新指示器
-        RefreshIndicator();
-
-        #region MyRegion
-
-        // int count = items.Count - childCount;
-        // if(count == 0)return;
-        //
-        // if (count > 0)
-        // {
-        //     //生成cell
-        //     for (int i = 0; i < count; i++)
-        //     {
-        //         childCount++;
-        //         ItemCell cell = Instantiate(itemUIPrefab, contentTrans).GetComponent<ItemCell>();
-        //         itemCells.Add(cell);
-        //     }
-        //
-        //     for (int i = 0; i < itemCells.Count; i++)
-        //     {
-        //         itemCells[i].SetValue(items[i],i);
-        //     }
-        // }
-        //
-        // if (count < 0)
-        // {
-        //     count = Mathf.Abs(count);
-        //     //销毁cell
-        //     for (int i = 0; i <count; i++)
-        //     {
-        //         ItemCell cell = itemCells.Find(t => t.GetItem().displayName == itemData.displayName);
-        //         itemCells.Remove(cell);
-        //         childCount --;//因为Destroy需要在这一帧结束才能生效，所以下方需要依照子物体数量的循环会有问题，这里手动调整子物体数量
-        //
-        //         if (!Application.isPlaying)
-        //         {
-        //             DestroyImmediate(cell.gameObject);
-        //             continue;
-        //         }
-        //         Destroy(cell.gameObject);
-        //     }
-        //     
-        //     SetIndicator(false, null);
-        // }
-        //
-        // RefreshIndicator();//刷新指示器位置
-        //
-
-        #endregion
+        RefreshIndicator(isAdd);
     }
 
-    void RefreshIndicator()
+    void RefreshIndicator(bool isAdd)
     {
         if (curItemData == null||curItemData.displayName==string.Empty)
         {
@@ -169,25 +124,24 @@ public class ItemManager : MonoBehaviour
         
         if (cell == null)return;
         
-        SetIndicator(true, cell.GetParent());
+        SetIndicator(isAdd, cell.GetParent());
     }
 
     void SetIndicator(bool active, Transform trans)
     {
         if (active)
         {
-            indicator.gameObject.SetActive(true);
             indicator.SetParent(trans);
             indicator.transform.localPosition = Vector3.zero;
             indicator.transform.rotation = trans.rotation;
             indicator.transform.localScale = trans.localScale;
-            indicator.transform.SetAsFirstSibling();//使指示器最先渲染（显示在Icon下面）
+            indicator.transform.SetSiblingIndex(trans.childCount-2);//使指示器显示在Icon下面
         }
         else
         {
-            indicator.gameObject.SetActive(false);
             indicator.SetParent(trans); //这一行可能会导致指示器的缩放改变//但是没有这行可能导致指示器被删除
         }
+        indicator.gameObject.SetActive(active);
     }
 
     public ItemData[] testItems;
@@ -207,11 +161,11 @@ public class ItemManager : MonoBehaviour
     }
     public void ChangeCurrentItem(ItemData itemData, ItemCell itemCell, Transform trans)
     {
-        if (itemData == curItemData)
+        if (itemData == curItemData||itemData==null)
         {
             curItemData = null;
             curItemCell = null;
-            //indicator.gameObject.SetActive(false);
+            indicator.gameObject.SetActive(false);
             return;
         }
 

@@ -11,13 +11,14 @@ public class ItemCell : MonoBehaviour
     [FormerlySerializedAs("item")] [SerializeField]ItemData itemData;
     [SerializeField]Button button;
     
-
+    Color transparent=new Color(0, 0, 0, 0);
     private void Awake()
     {
         button.onClick.AddListener(()=>
         {
             ItemManager.Ins.ChangeCurrentItem(itemData, this,transform);
         });
+        iconImage.color = new Color(0, 0, 0, 0);
     }
 
     public void UpdateCell(ItemData itemData)
@@ -27,16 +28,18 @@ public class ItemCell : MonoBehaviour
             Debug.Log("icon为空");
             iconImage.sprite = null;
             this.itemData = itemData;
+            iconImage.color=transparent;
             
             return;
         }
         iconImage.sprite = itemData.icon;
         this.itemData = itemData;
+        iconImage.color=Color.white;
     }
 
     public Transform GetParent()
     {
-        return iconImage.transform;
+        return transform;
     }
 
     public ItemData GetItem()
