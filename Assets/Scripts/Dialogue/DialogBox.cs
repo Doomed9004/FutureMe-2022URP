@@ -20,8 +20,11 @@ public class DialogBox : MonoBehaviour,IPointerUpHandler
     {
         sceneManager.OnSceneChange += SceneChangeEventHandler;
         window.OnClick += ClickedEventHandler;
-        foreach (var dl in dialogsSO.dialogs)//初始化设置初始值
+        foreach (var dl in dialogsSO.dialogs)
         {
+            //先初始化SO中Scene数据
+            dl.scene=sceneManager.root.transform.Find(dl.sceneName).gameObject;
+            //初始化字典
             dialogsDict[dl.scene] = dl;
             dialogsState[dl] = false;
         }

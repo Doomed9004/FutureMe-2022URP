@@ -52,20 +52,20 @@ public class DialogSOImporter : EditorWindow
     private void ImportFromCSV(string filePath, DialogSO so)
     {
         // 获取当前激活的场景
-        Scene currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        if (!currentScene.IsValid())
-        {
-            EditorUtility.DisplayDialog("Error", "No active scene found. Please open a scene first.", "OK");
-            return;
-        }
+        // Scene currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        // if (!currentScene.IsValid())
+        // {
+        //     EditorUtility.DisplayDialog("Error", "No active scene found. Please open a scene first.", "OK");
+        //     return;
+        // }
 
         // 收集当前场景中的所有 GameObject（包括未激活的）
-        GameObject[] allObjects = currentScene.GetRootGameObjects();
-        Dictionary<string, GameObject> nameToObject = new Dictionary<string, GameObject>();
-        foreach (var root in allObjects)
-        {
-            AddAllChildren(root, nameToObject);
-        }
+        // GameObject[] allObjects = currentScene.GetRootGameObjects();
+        // Dictionary<string, GameObject> nameToObject = new Dictionary<string, GameObject>();
+        // foreach (var root in allObjects)
+        // {
+        //     AddAllChildren(root, nameToObject);
+        // }
 
         // 读取并解析 CSV（支持引号包裹的多行字段）
         List<string[]> rows = ReadCSVWithMultiline(filePath);
@@ -112,18 +112,18 @@ public class DialogSOImporter : EditorWindow
             }
 
             // 查找场景中的同名 GameObject
-            GameObject sceneObj = null;
-            if (nameToObject.TryGetValue(sceneName, out GameObject found))
-                sceneObj = found;
-            else
-                Debug.LogWarning($"Row {i + 1}: GameObject '{sceneName}' not found in current scene.");
+            string _sceneName=sceneName ;
+            // if (nameToObject.TryGetValue(sceneName, out GameObject found))
+            //     sceneObj = found;
+            // else
+            //     Debug.LogWarning($"Row {i + 1}: GameObject '{sceneName}' not found in current scene.");
 
             // DialogList dl = new DialogList
             // {
             //     texts = texts,
             //     scene = sceneObj
             // };
-            DialogList dl = new DialogList(texts, sceneObj);
+            DialogList dl = new DialogList(texts, sceneName);
             dialogList.Add(dl);
         }
 

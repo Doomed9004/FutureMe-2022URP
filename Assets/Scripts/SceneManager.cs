@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class SceneManager : MonoBehaviour
 {
-    [SerializeField] private Transform root;
+    public Transform root;
     [SerializeField] private float duration;
 
     public GameObject curScene;
 	public SpriteRenderer blackBoard;
     private GameObject[] _scenes;
+
+    public GameObject firstScene;
     
     public static SceneManager Ins{get; private set;}
     public event Action<GameObject> OnSceneChange;
@@ -25,6 +27,7 @@ public class SceneManager : MonoBehaviour
         {
             Transform child = root.GetChild(i);
             _scenes[i] = child.gameObject;
+            _scenes[i].SetActive(firstScene== _scenes[i]);
         }
     }
     

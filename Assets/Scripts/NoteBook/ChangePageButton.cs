@@ -4,19 +4,19 @@ using UnityEngine.EventSystems;
 
 public class ChangePageButton : MonoBehaviour,IPointerUpHandler
 {
-    public GameObject notePage, emptyPage;
+    public GameObject curPage, nextPage;
     public bool pageState=true;
     private void Awake()
     {
-        notePage.SetActive(true);
-        emptyPage.SetActive(false);
+        curPage.SetActive(pageState);
+        //nextPage.SetActive(!pageState);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         //点击后关闭并开启指定对象
-        pageState = !pageState;
-        notePage.SetActive(pageState);
-        emptyPage.SetActive(!pageState);
+        //pageState = !pageState;
+        curPage.SetActive(!curPage.activeSelf);
+        nextPage.SetActive(!nextPage.activeSelf);
     }
 }

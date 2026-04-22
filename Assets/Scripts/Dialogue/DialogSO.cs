@@ -9,11 +9,18 @@ public class DialogSO : ScriptableObject
 public class DialogList
 {
     public string[] texts;//文本内容
+    public string sceneName;
+    [HideInInspector]
     public GameObject scene;//目标场景
-
+    public DialogList(string[] texts, string sceneName)
+    {
+        this.texts = texts;
+        this.sceneName = sceneName;
+    }
     public DialogList(string[] texts, GameObject scene)
     {
         this.texts = texts;
         this.scene = scene;
+        sceneName = scene.name;
     }
 }
