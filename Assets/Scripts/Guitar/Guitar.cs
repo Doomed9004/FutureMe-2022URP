@@ -10,6 +10,8 @@ public class Guitar : MonoBehaviour,IPointerUpHandler
     bool isTuned = false;
 
     public Sprite guitarSprite;
+    
+    public GuitarEffects effects;
     enum GuitarState
     {
         Misshapen,
@@ -48,7 +50,14 @@ public class Guitar : MonoBehaviour,IPointerUpHandler
                 break;
             case GuitarState.Complete:
                 //TODO:展示提示信息
+                effects.StartGenerateEffect();
                 break;
         }
+    }
+
+    [ContextMenu("特效测试")]
+    public void EffectTest()
+    {
+        effects.StartGenerateEffect();
     }
 }
