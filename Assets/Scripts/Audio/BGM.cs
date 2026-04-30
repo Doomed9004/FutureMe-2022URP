@@ -25,6 +25,7 @@ public class BGM : MonoBehaviour
 
     void HandleOnAwake()
     {
-        
+        dayBGM.SetActive(true);
+        normalBGM.SetActive(false);
     }
 }

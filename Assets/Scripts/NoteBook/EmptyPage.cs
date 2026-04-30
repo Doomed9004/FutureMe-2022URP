@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EmptyPage : MonoBehaviour
+public class EmptyPage : MonoBehaviour//场景中的emptyPage有神秘bug，一定以激活状态运行，如果失活状态运行会导致切换页面时页面丢失
 {
     public TMP_InputField inputField;
     public Button button;

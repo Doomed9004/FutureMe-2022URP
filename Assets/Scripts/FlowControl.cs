@@ -36,11 +36,10 @@ public class FlowControl : MonoBehaviour
 
     Chapters chapter=Chapters.Child;
 
-    void Func2()
+    void Func2()//玩家可以睡觉到第二天
     {
+        Debug.Log("接收到提交事件");
         bed2.SetActive(true);
-        chapter=Chapters.Awake;
-        OnAwake?.Invoke();
     }
     void Func(GameObject scene)
     {
@@ -63,6 +62,11 @@ public class FlowControl : MonoBehaviour
                 
                 break;
             case Chapters.Youth:
+                if (scene.name == "结束场景")
+                {
+                    chapter=Chapters.Awake;
+                    OnAwake?.Invoke();
+                }
                 
                 break;
             case Chapters.Awake:
