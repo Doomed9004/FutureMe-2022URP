@@ -13,6 +13,7 @@ public class NoteBook : MonoBehaviour
 
     public void SetCanWrite(bool b)
     {
+        Debug.Log(b);
         _canWrite = b;
         if (!_canWrite)return;
         button.SetActive(true);
