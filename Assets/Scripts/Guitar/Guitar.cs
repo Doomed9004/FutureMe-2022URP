@@ -12,6 +12,7 @@ public class Guitar : MonoBehaviour,IPointerUpHandler
     public Sprite guitarSprite;
     
     public GuitarEffects effects;
+    public AudioSource audioSource;
     enum GuitarState
     {
         Misshapen,
@@ -44,6 +45,7 @@ public class Guitar : MonoBehaviour,IPointerUpHandler
                     GetComponent<SpriteRenderer>().sprite = guitarSprite;//更换上线后的素材
                     curState = GuitarState.NotTuned;
                     
+                    audioSource.Play();
                     //移除道具
                     ItemManager.Ins.DestroyItem();
                 }

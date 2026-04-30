@@ -15,6 +15,7 @@ public class GuitarEffects : MonoBehaviour
     public float fadeTime=0.3f;
 
     Coroutine coroutine;
+    public AudioSource audioSource;
     public void StartGenerateEffect()
     {
         if (coroutine == null)
@@ -29,6 +30,7 @@ public class GuitarEffects : MonoBehaviour
     }
     IEnumerator GenerateEffect()
     {
+        audioSource.Play();
         int index = 0;
         while (index < text.Length)
         {

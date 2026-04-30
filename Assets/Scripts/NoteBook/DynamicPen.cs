@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DynamicPen : MonoBehaviour,IDragHandler
+public class DynamicPen : MonoBehaviour,IDragHandler,IEndDragHandler,IBeginDragHandler
 {
     public Transform drawPoint;
     public Camera drawCamera;
@@ -12,6 +12,7 @@ public class DynamicPen : MonoBehaviour,IDragHandler
     // {
     //     drawCamera.gameObject.SetActive(false);
     // }
+    public AudioSource audioSource;
 
     private void OnEnable()
     {
@@ -27,5 +28,16 @@ public class DynamicPen : MonoBehaviour,IDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         brush.Draw(drawPoint.position,depth);
+        
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        audioSource.Stop();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        audioSource.Play();
     }
 }

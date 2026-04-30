@@ -6,6 +6,8 @@ public class ChangePageButton : MonoBehaviour,IPointerUpHandler
 {
     public GameObject curPage, nextPage;
     public bool pageState=true;
+    
+    public AudioSource audioSource;
     private void Awake()
     {
         curPage.SetActive(pageState);
@@ -18,5 +20,6 @@ public class ChangePageButton : MonoBehaviour,IPointerUpHandler
         //pageState = !pageState;
         curPage.SetActive(!curPage.activeSelf);
         nextPage.SetActive(!nextPage.activeSelf);
+        audioSource.Play();
     }
 }
