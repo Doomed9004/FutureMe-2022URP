@@ -12,6 +12,8 @@ public class FlowControl : MonoBehaviour
     [Header("Youth")] 
     public EmptyPage emptyPage;
     public GameObject bed2;
+
+    public event Action OnAwake;
     // [Header("Awake")]
     enum Chapters
     {
@@ -38,6 +40,7 @@ public class FlowControl : MonoBehaviour
     {
         bed2.SetActive(true);
         chapter=Chapters.Awake;
+        OnAwake?.Invoke();
     }
     void Func(GameObject scene)
     {
